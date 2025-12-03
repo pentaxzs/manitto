@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>마니또 페어 매칭</title>
+  <!-- 모바일 반응형 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-900 flex justify-center px-3 py-4 md:px-4 md:py-8">
+  <div class="w-full max-w-3xl bg-slate-800 rounded-2xl shadow-2xl p-4 md:p-8 text-slate-100">
+    <header class="mb-6">
+      <h1 class="text-xl md:text-3xl font-bold tracking-tight mb-2">
+        마니또 페어 매칭기 🎁
+      </h1>
+      <p class="text-xs md:text-base text-slate-300 leading-relaxed">
+        사람 이름을 쉼표( , )로 구분해서 최대 50명까지 입력한 뒤, 랜덤 매칭 버튼을 누르면
+        <span class="font-semibold text-indigo-300">2~3인 그룹 페어</span> 또는
+        <span class="font-semibold text-emerald-300">순환 매칭</span> 중 원하는 방식으로 마니또를 만들 수 있습니다.
+      </p>
+    </header>
+
+    <!-- 입력 영역 -->
+    <section class="mb-6">
+      <div class="flex items-center justify-between gap-2 mb-2">
+        <label for="namesInput" class="text-sm font-medium text-slate-200">
+          이름 목록
+        </label>
+        <span id="countBadge" class="text-[11px] rounded-full px-3 py-1 bg-slate-700 text-slate-200 whitespace-nowrap">
+          0 / 50명
+        </span>
+      </div>
+      <textarea
+        id="namesInput"
+        class="w-full h-32 md:h-36 resize-none rounded-xl border border-slate-600 bg-slate-900/70 px-3 py-2 text-base md:text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-slate-500"
+        placeholder="예시&#10;김민수, 이영희, 박철수, 정해진"
+      ></textarea>
+      <p class="mt-2 text-[11px] md:text-xs text-slate-400 leading-relaxed">
+        · 쉼표( , ) 기준으로 이름을 구분해 주세요. 예) 김민수, 이영희, 박철수<br />
+        · 공백은 자동으로 제거되고, 비어 있는 이름은 무시됩니다.
+      </p>
+    </section>
+
+    <!-- 매칭 방식 선택 -->
+    <section class="mb-4 text-xs md:text-sm">
+      <p class="mb-1 text-slate-300 font-medium">매칭 방식</p>
+      <div class="flex flex-col sm:flex-row gap-2">
+        <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-600 cursor-pointer">
+          <input
+            type="radio"
+            name="matchType"
+            value="group"
+            class="accent-indigo-500"
+            checked
+          />
+          <span class="flex flex-col">
+            <span class="font-semibold text-slate-100">그룹 페어 매칭</span>
+            <span class="text-[11px] text-slate-400">
+              2명씩(마지막은 필요 시 3명) 그룹으로 묶어서 그룹 안에서 서로 선물 교환
+            </span>
+          </span>
+        </label>
+        <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-600 cursor-pointer">
+          <input
+            type="radio"
+            name="matchType"
+            value="cycle"
+            class="accent-emerald-500"
+          />
+          <span class="flex flex-col">
+            <span class="font-semibold text-slate-100">랜덤 순환 매칭</span>
+            <span class="text-[11px] text-slate-400">
+              A→B→C→…→A 처럼 한 줄로 이어지는 시크릿 산타 순환 구조
+            </span>
+          </span>
+        </label>
+      </div>
+    </section>
+
+    <!-- 경고/에러 메시지 -->
+    <div id="errorBox" class="hidden mb-4 rounded-xl border border-red-400 bg-red-500/10 px-4 py-3 text-xs md:text-sm text-red-200">
+    </div>
+
+    <!-- 버튼 -->
+    <div class="flex flex-col md:flex-row gap-2 md:gap-4 mb-4">
+      <button
+        id="shuffleButton"
+        class="w-full md:flex-1 inline-flex items-center justify-center rounded-xl bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-600 px-4 py-2 text-sm md:text-base font-semibold transition disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        🔀 랜덤 매칭 시작
+      </button>
+      <button
+        id="clearButton"
+        class="w-full md:w-28 inline-flex items-center justify-center rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 active:bg-slate-900 px-4 py-2 text-sm md:text-base font-medium text-slate-200 transition"
+      >
+        초기화
+      </button>
+      <button
+        id="downloadCsvButton"
+        class="w-full md:w-40 inline-flex items-center justify-center rounded-xl border border-emerald-500/60 bg-emerald-600/80 hover:bg-emerald-500 active:bg-emerald-700 px-4 py-2 text-sm md:text-base font-semibold text-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled
+      >
+        📥 CSV 다운로드
+      </button>
+    </div>
+
+    <!-- 보기 모드 토글 -->
+    <div class="mb-4 flex flex-wrap items-center gap-2 text-xs md:text-sm">
+      <span class="text-slate-300">보기 모드:</span>
+      <button
+        id="viewAllButton"
+        class="px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-indigo-500 text-white border border-indigo-400"
+        data-mode="all"
+      >
+        전체보기
+      </button>
+      <button
+        id="viewSecretButton"
+        class="px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-slate-700 text-slate-100 border border-slate-500"
+        data-mode="secret"
+      >
+        마니또 비밀보기
+      </button>
+    </div>
+
+    <!-- 결과 영역 -->
+    <section>
+      <h2 class="text-base md:text-lg font-semibold mb-3 text-slate-100">
+        매칭 결과
+      </h2>
+      <div id="resultContainer" class="space-y-3 text-sm md:text-base text-slate-200">
+        <p class="text-slate-400 text-sm">
+          아직 매칭을 시작하지 않았어요. 참가자 이름을 입력하고 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼을 눌러주세요.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const namesInput = document.getElementById('namesInput');
+    const shuffleButton = document.getElementById('shuffleButton');
+    const clearButton = document.getElementById('clearButton');
+    const downloadCsvButton = document.getElementById('downloadCsvButton');
+    const resultContainer = document.getElementById('resultContainer');
+    const errorBox = document.getElementById('errorBox');
+    const countBadge = document.getElementById('countBadge');
+    const viewAllButton = document.getElementById('viewAllButton');
+    const viewSecretButton = document.getElementById('viewSecretButton');
+
+    let currentPairs = [];
+    let currentNames = [];
+    let currentViewMode = 'all';   // 'all' | 'secret'
+    let currentMatchType = 'group'; // 'group' | 'cycle'
+
+    function getCleanNames() {
+      return namesInput.value
+        .split(',')
+        .map((name) => name.trim())
+        .filter((name) => name.length > 0);
+    }
+
+    function updateCount() {
+      const names = getCleanNames();
+      countBadge.textContent = names.length + ' / 50명';
+    }
+
+    function showError(message) {
+      errorBox.textContent = message;
+      errorBox.classList.remove('hidden');
+    }
+
+    function clearError() {
+      errorBox.textContent = '';
+      errorBox.classList.add('hidden');
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    // 2~3인 그룹 페어 매칭
+    function makeGroupPairs(names) {
+      const shuffled = shuffleArray(names);
+      const pairs = [];
+
+      for (let i = 0; i < shuffled.length; i += 2) {
+        // 남은 인원이 3명일 때는 3인 그룹으로 묶기
+        if (shuffled.length - i === 3) {
+          pairs.push(shuffled.slice(i, i + 3));
+          break;
+        } else {
+          pairs.push(shuffled.slice(i, i + 2));
+        }
+      }
+      return pairs;
+    }
+
+    // 전체를 한 줄로 이어지는 순환 매칭 (A→B→C→…→A)
+    function makeRandomCycle(names) {
+      const shuffled = shuffleArray(names);
+      return [shuffled]; // 하나의 큰 그룹으로 다룬다
+    }
+
+    function renderAllView() {
+      if (!currentPairs.length) {
+        resultContainer.innerHTML =
+          '<p class="text-slate-400 text-sm">아직 매칭 결과가 없습니다. 먼저 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼으로 매칭을 실행해 주세요.</p>';
+        return;
+      }
+
+      resultContainer.innerHTML = '';
+
+      currentPairs.forEach((group, index) => {
+        const card = document.createElement('div');
+        card.className =
+          'rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2';
+
+        const left = document.createElement('div');
+
+        const arrow = currentMatchType === 'cycle' ? '  →  ' : '  ↔  ';
+        let content = group.join(arrow);
+        if (currentMatchType === 'cycle' && group.length > 1) {
+          // 순환임을 시각적으로 보여주기 위해 마지막에 다시 첫 사람 표시
+          content = group.join('  →  ') + '  →  ' + group[0];
+        }
+
+        const label =
+          currentMatchType === 'cycle'
+            ? (group.length === currentNames.length ? '전체 순환' : '순환 그룹')
+            : (group.length === 2 ? 'PAIR' : '3인 그룹');
+
+        left.innerHTML = `
+          <p class="text-[11px] text-slate-400 mb-1">그룹 ${index + 1}</p>
+          <p class="font-semibold break-words">
+            ${content}
+          </p>
+        `;
+
+        const tag = document.createElement('span');
+        tag.className =
+          'self-start sm:self-auto text-[10px] uppercase tracking-wide px-2 py-1 rounded-full border border-indigo-500 text-indigo-200 bg-indigo-500/10';
+        tag.textContent = label;
+
+        card.appendChild(left);
+        card.appendChild(tag);
+        resultContainer.appendChild(card);
+      });
+    }
+
+    function buildSecretMap() {
+      const map = {};
+      currentPairs.forEach((group) => {
+        group.forEach((name, idx) => {
+          const target = group[(idx + 1) % group.length]; // 원형 구조
+          map[name] = target;
+        });
+      });
+      return map;
+    }
+
+    function renderSecretView() {
+      if (!currentPairs.length) {
+        resultContainer.innerHTML =
+          '<p class="text-slate-400 text-sm">아직 매칭 결과가 없습니다. 먼저 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼으로 매칭을 실행해 주세요.</p>';
+        return;
+      }
+
+      const secretMap = buildSecretMap();
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'space-y-3';
+
+      const desc = document.createElement('p');
+      desc.className = 'text-[11px] md:text-sm text-slate-300 leading-relaxed';
+      desc.innerHTML =
+        '아래에서 자신의 이름을 선택하면, <span class="font-semibold text-emerald-300">내 마니또가 누구인지</span>만 볼 수 있습니다. (각 그룹 안에서 원형으로 연결됩니다.)';
+      wrapper.appendChild(desc);
+
+      const controlRow = document.createElement('div');
+      controlRow.className = 'flex flex-col md:flex-row gap-2 md:items-center';
+
+      const select = document.createElement('select');
+      select.id = 'secretSelect';
+      select.className =
+        'flex-1 rounded-lg border border-slate-600 bg-slate-900/80 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500';
+
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = '이름을 선택하세요';
+      select.appendChild(defaultOption);
+
+      const sortedNames = [...currentNames].sort((a, b) =>
+        a.localeCompare(b, 'ko')
+      );
+      sortedNames.forEach((name) => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        select.appendChild(opt);
+      });
+
+      const btn = document.createElement('button');
+      btn.textContent = '내 마니또 보기';
+      btn.className =
+        'md:w-32 inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 px-3 py-2 text-xs md:text-sm font-semibold text-slate-50 transition';
+
+      controlRow.appendChild(select);
+      controlRow.appendChild(btn);
+      wrapper.appendChild(controlRow);
+
+      const result = document.createElement('div');
+      result.id = 'secretResult';
+      result.className =
+        'mt-2 text-sm md:text-base text-slate-200 bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-3';
+      result.textContent = '이름을 선택하고 버튼을 눌러 마니또를 확인하세요.';
+      wrapper.appendChild(result);
+
+      resultContainer.innerHTML = '';
+      resultContainer.appendChild(wrapper);
+
+      btn.addEventListener('click', () => {
+        const selected = select.value;
+        if (!selected) {
+          result.textContent = '먼저 위에서 자신의 이름을 선택해 주세요.';
+          return;
+        }
+        const target = secretMap[selected];
+        if (!target) {
+          result.textContent = '선택한 이름에 대한 마니또 정보를 찾을 수 없습니다.';
+          return;
+        }
+        result.innerHTML = `
+          <span class="font-semibold text-emerald-300">${selected}</span>님의 마니또는
+          <span class="font-semibold text-amber-300">${target}</span> 입니다. 🤫
+        `;
+      });
+    }
+
+    function renderView() {
+      if (currentViewMode === 'all') {
+        renderAllView();
+      } else {
+        renderSecretView();
+      }
+    }
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      if (mode === 'all') {
+        viewAllButton.className =
+          'px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-indigo-500 text-white border border-indigo-400';
+        viewSecretButton.className =
+          'px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-slate-700 text-slate-100 border border-slate-500';
+      } else {
+        viewSecretButton.className =
+          'px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-indigo-500 text-white border border-indigo-400';
+        viewAllButton.className =
+          'px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-slate-700 text-slate-100 border border-slate-500';
+      }
+      renderView();
+    }
+
+    function updateDownloadButtonState() {
+      downloadCsvButton.disabled = currentPairs.length === 0;
+    }
+
+    function downloadCSV() {
+      if (!currentPairs.length) return;
+
+      const rows = [['Person', 'Manitto', 'Group']];
+      currentPairs.forEach((group, groupIdx) => {
+        group.forEach((name, i) => {
+          const target = group[(i + 1) % group.length];
+          rows.push([name, target, 'Group ' + (groupIdx + 1)]);
+        });
+      });
+
+      const csvContent = rows
+        .map((row) =>
+          row
+            .map((field) => {
+              const value = String(field).replace(/"/g, '""');
+              return `"${value}"`;
+            })
+            .join(',')
+        )
+        .join('\r\n');
+
+      const blob = new Blob([csvContent], {
+        type: 'text/csv;charset=utf-8;',
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'manitto_pairs.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    shuffleButton.addEventListener('click', () => {
+      clearError();
+      const names = getCleanNames();
+
+      if (names.length < 2) {
+        showError('최소 2명 이상 입력해야 마니또 매칭이 가능합니다.');
+        resultContainer.innerHTML =
+          '<p class="text-slate-400 text-sm">참가자를 최소 2명 이상 입력해 주세요.</p>';
+        currentPairs = [];
+        updateDownloadButtonState();
+        return;
+      }
+
+      if (names.length > 50) {
+        showError('최대 50명까지만 매칭할 수 있습니다. 인원을 줄여주세요.');
+        currentPairs = [];
+        updateDownloadButtonState();
+        return;
+      }
+
+      const matchTypeInput = document.querySelector('input[name="matchType"]:checked');
+      const matchType = matchTypeInput ? matchTypeInput.value : 'group';
+      currentMatchType = matchType;
+
+      currentNames = names;
+      if (matchType === 'cycle') {
+        currentPairs = makeRandomCycle(names);
+      } else {
+        currentPairs = makeGroupPairs(names);
+      }
+
+      updateDownloadButtonState();
+      renderView();
+    });
+
+    clearButton.addEventListener('click', () => {
+      namesInput.value = '';
+      currentPairs = [];
+      currentNames = [];
+      updateCount();
+      clearError();
+      updateDownloadButtonState();
+      resultContainer.innerHTML =
+        '<p class="text-slate-400 text-sm">아직 매칭을 시작하지 않았어요. 참가자 이름을 입력하고 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼을 눌러주세요.</p>';
+    });
+
+    namesInput.addEventListener('input', updateCount);
+
+    viewAllButton.addEventListener('click', () => setViewMode('all'));
+    viewSecretButton.addEventListener('click', () => setViewMode('secret'));
+
+    downloadCsvButton.addEventListener('click', downloadCSV);
+
+    // 초기 세팅
+    updateCount();
+    setViewMode('all');
+    updateDownloadButtonState();
+  </script>
+</body>
+</html>

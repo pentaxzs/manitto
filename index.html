@@ -1,12 +1,85 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>마니또 페어 매칭</title>
+  <meta name="description" content="엑셀 없이 마니또를 랜덤 매칭해보세요. 2~3인 그룹 페어 매칭과 A→B→C→A 순환(시크릿 산타) 매칭을 지원하며, 결과는 CSV로 다운로드할 수 있습니다. 입력한 이름은 브라우저에서만 처리됩니다." />
+  <link rel="canonical" href="./" />
+  <!-- Open Graph (카톡/슬랙 공유용) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭" />
+  <meta property="og:description" content="엑셀 없이 마니또 랜덤 매칭! 2~3인 그룹 페어 / 순환(시크릿 산타) 매칭 지원, CSV 다운로드. 입력한 이름은 브라우저에서만 처리됩니다." />
+  <!-- og:image는 배포 후 실제 이미지 URL로 교체 권장 -->
+  <meta property="og:image" content="" />
+  <meta name="twitter:card" content="summary" />
+  <title>마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환(시크릿 산타) 매칭</title>
   <!-- 모바일 반응형 -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 구조화 데이터(검색 노출 도움): FAQ + 앱 정보 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "마니또 매칭기",
+    "applicationCategory": "WebApplication",
+    "operatingSystem": "All",
+    "description": "엑셀 없이 마니또를 랜덤 매칭하는 웹앱. 2~3인 그룹 페어 매칭과 순환(시크릿 산타) 매칭을 지원하며 CSV 다운로드가 가능합니다.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "마니또 매칭은 공정한가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "참가자 목록을 무작위로 섞은 뒤 규칙(그룹 2~3인 또는 순환 매칭)에 따라 결과를 생성합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "2~3인 그룹으로 랜덤 매칭할 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 그룹 페어 매칭을 선택하면 기본 2인, 인원이 홀수로 남는 경우 마지막 그룹을 3인으로 묶어 매칭합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "순환 매칭은 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A→B→C→…→A 형태로 한 줄의 순환 구조를 만들고, 각 사람은 다음 사람에게 선물을 주는 방식입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "입력한 이름이 저장되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "이 페이지의 매칭 로직은 브라우저에서 실행되며, 이름을 서버로 전송하거나 저장하지 않습니다(페이지 코드 기준)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "CSV 다운로드에는 무엇이 들어가나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Person(나), Manitto(내가 선물 줄 대상), Group(그룹 번호) 형식으로 내려받을 수 있습니다."
+        }
+      }
+    ]
+  }
+  </script>
+
 </head>
 
 <!-- ✅ 모바일 하단 배너(50px) 공간 확보: pb-[70px] -->
@@ -106,6 +179,14 @@
       >
         📥 CSV 다운로드
       </button>
+
+      <button
+        id="copyLinkButton"
+        class="w-full md:w-40 inline-flex items-center justify-center rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 active:bg-slate-900 px-4 py-2 text-sm md:text-base font-semibold text-slate-100 transition"
+        type="button"
+      >
+        🔗 링크 복사
+      </button>
     </div>
 
     <!-- 보기 모드 토글 -->
@@ -137,10 +218,66 @@
           아직 매칭을 시작하지 않았어요. 참가자 이름을 입력하고 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼을 눌러주세요.
         </p>
       </div>
+
+    </section>
+
+    <!-- 안내/가이드(검색/공유 최적화용 콘텐츠) -->
+    <section class="mt-10 space-y-8">
+      <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
+        <h2 class="text-lg md:text-xl font-semibold mb-2">3분 사용법</h2>
+        <ol class="list-decimal pl-5 text-sm md:text-base text-slate-200 space-y-1">
+          <li>이름을 쉼표(,)로 구분해 입력합니다. (최대 50명)</li>
+          <li><b>그룹 페어</b> 또는 <b>순환 매칭</b> 중 방식을 선택합니다.</li>
+          <li><b>랜덤 매칭 시작</b>을 누르고 결과를 확인합니다.</li>
+          <li>필요하면 <b>CSV 다운로드</b>로 결과를 저장/공유하세요.</li>
+        </ol>
+        <p class="mt-3 text-xs text-slate-400">
+          * 이 페이지는 입력한 이름을 서버로 보내지 않고, 브라우저에서만 처리합니다.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
+        <h2 class="text-lg md:text-xl font-semibold mb-2">추천 사용 시나리오</h2>
+        <ul class="list-disc pl-5 text-sm md:text-base text-slate-200 space-y-1">
+          <li>회사 연말/신년회 마니또(시크릿 산타)</li>
+          <li>팀 워크숍 아이스브레이킹(2~3인 그룹 선물 교환)</li>
+          <li>학교/동아리 이벤트(인원 많아도 빠르게 매칭)</li>
+        </ul>
+      </div>
+
+      <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
+        <h2 class="text-lg md:text-xl font-semibold mb-2">자주 묻는 질문(FAQ)</h2>
+        <div class="space-y-4 text-sm md:text-base text-slate-200">
+          <div>
+            <p class="font-semibold">Q. 마니또 매칭은 공정한가요?</p>
+            <p class="text-slate-300">A. 참가자 목록을 무작위로 섞은 뒤 규칙(그룹 2~3인 또는 순환)에 따라 결과를 생성합니다.</p>
+          </div>
+          <div>
+            <p class="font-semibold">Q. 2~3인 그룹으로 랜덤 매칭할 수 있나요?</p>
+            <p class="text-slate-300">A. 네. 그룹 페어 매칭은 기본 2인, 인원이 홀수로 남는 경우 마지막 그룹을 3인으로 묶습니다.</p>
+          </div>
+          <div>
+            <p class="font-semibold">Q. 순환 매칭은 무엇인가요?</p>
+            <p class="text-slate-300">A. A→B→C→…→A 형태로 순환 구조를 만들고, 각 사람은 다음 사람에게 선물을 주는 방식입니다.</p>
+          </div>
+          <div>
+            <p class="font-semibold">Q. 입력한 이름이 저장되나요?</p>
+            <p class="text-slate-300">A. 이 페이지의 매칭 로직은 브라우저에서 실행되며, 이름을 서버로 전송하거나 저장하지 않습니다(페이지 코드 기준).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
+        <h2 class="text-lg md:text-xl font-semibold mb-2">공유 팁</h2>
+        <p class="text-sm md:text-base text-slate-200">
+          단체 채팅방(카톡/슬랙)에 링크를 올리고 “이름은 쉼표로 입력 → 랜덤 매칭 시작 → (비밀보기로 각자 확인)” 한 줄만 안내하면 운영이 훨씬 부드럽습니다.
+        </p>
+      </div>
     </section>
   </div>
 
     <!-- ✅ PC/모바일 모두 하단 고정 배너 -->
+
     <div class="fixed bottom-0 left-0 right-0 z-50">
       <div class="mx-auto w-[320px] h-[50px]">
         <ins class="kakao_ad_area" style="display:none;"
@@ -150,7 +287,6 @@
       </div>
     </div>
 
-  </div>
 
   <!-- ✅ 카카오 광고 스크립트: body 하단에 1회만 -->
   <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
@@ -165,6 +301,15 @@
     const countBadge = document.getElementById('countBadge');
     const viewAllButton = document.getElementById('viewAllButton');
     const viewSecretButton = document.getElementById('viewSecretButton');
+    const copyLinkButton = document.getElementById('copyLinkButton');
+
+    function toast(message) {
+      const t = document.createElement('div');
+      t.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[9999] rounded-xl border border-slate-600 bg-slate-900/90 px-4 py-2 text-sm text-slate-100 shadow-2xl';
+      t.textContent = message;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 1600);
+    }
 
     let currentPairs = [];
     let currentNames = [];
@@ -475,6 +620,24 @@
     viewSecretButton.addEventListener('click', () => setViewMode('secret'));
 
     downloadCsvButton.addEventListener('click', downloadCSV);
+    if (copyLinkButton) {
+      copyLinkButton.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          toast('링크를 복사했어요!');
+        } catch (e) {
+          // fallback
+          const tmp = document.createElement('input');
+          tmp.value = window.location.href;
+          document.body.appendChild(tmp);
+          tmp.select();
+          document.execCommand('copy');
+          document.body.removeChild(tmp);
+          toast('링크를 복사했어요!');
+        }
+      });
+    }
+
 
     // 초기 세팅
     updateCount();

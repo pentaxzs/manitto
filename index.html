@@ -8,7 +8,10 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-slate-900 flex justify-center px-3 py-4 md:px-4 md:py-8">
+
+<!-- ✅ 모바일 하단 배너(50px) 공간 확보: pb-[70px] -->
+<body class="min-h-screen bg-slate-900 flex justify-center px-3 py-4 md:px-4 md:py-8 pb-[70px]">
+
   <div class="w-full max-w-3xl bg-slate-800 rounded-2xl shadow-2xl p-4 md:p-8 text-slate-100">
     <header class="mb-6">
       <h1 class="text-xl md:text-3xl font-bold tracking-tight mb-2">
@@ -136,6 +139,21 @@
       </div>
     </section>
   </div>
+
+    <!-- ✅ PC/모바일 모두 하단 고정 배너 -->
+    <div class="fixed bottom-0 left-0 right-0 z-50">
+      <div class="mx-auto w-[320px] h-[50px]">
+        <ins class="kakao_ad_area" style="display:none;"
+          data-ad-unit="DAN-A4CEKaITxzS7T4aW"
+          data-ad-width="320"
+          data-ad-height="50"></ins>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ✅ 카카오 광고 스크립트: body 하단에 1회만 -->
+  <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
   <script>
     const namesInput = document.getElementById('namesInput');

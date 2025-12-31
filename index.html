@@ -1,18 +1,17 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content="엑셀 없이 마니또를 랜덤 매칭해보세요. 2~3인 그룹 페어 매칭과 A→B→C→A 순환(시크릿 산타) 매칭을 지원하며, 결과는 CSV로 다운로드할 수 있습니다. 입력한 이름은 브라우저에서만 처리됩니다." />
+  <meta id="metaDescription" name="description" content="엑셀 없이 마니또를 랜덤 매칭해보세요. 2~3인 그룹 페어 매칭과 A→B→C→A 순환(시크릿 산타) 매칭을 지원하며, 결과는 CSV로 다운로드할 수 있습니다. 입력한 이름은 브라우저에서만 처리됩니다." />
   <link rel="canonical" href="./" />
   <!-- Open Graph (카톡/슬랙 공유용) -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭" />
-  <meta property="og:description" content="엑셀 없이 마니또 랜덤 매칭! 2~3인 그룹 페어 / 순환(시크릿 산타) 매칭 지원, CSV 다운로드. 입력한 이름은 브라우저에서만 처리됩니다." />
+  <meta id="ogTitle" property="og:title" content="마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭" />
+  <meta id="ogDescription" property="og:description" content="엑셀 없이 마니또 랜덤 매칭! 2~3인 그룹 페어 / 순환(시크릿 산타) 매칭 지원, CSV 다운로드. 입력한 이름은 브라우저에서만 처리됩니다." />
   <!-- og:image는 배포 후 실제 이미지 URL로 교체 권장 -->
   <meta property="og:image" content="" />
   <meta name="twitter:card" content="summary" />
-  <title>마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환(시크릿 산타) 매칭</title>
+  <title id="pageTitle">마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭</title>
   <!-- 모바일 반응형 -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Tailwind CSS CDN -->
@@ -82,25 +81,41 @@
 
 </head>
 
-<!-- ✅ 모바일 하단 배너(50px) 공간 확보: pb-[70px] -->
 <body class="min-h-screen bg-slate-900 flex justify-center px-3 py-4 md:px-4 md:py-8 pb-[70px]">
 
   <div class="w-full max-w-3xl bg-slate-800 rounded-2xl shadow-2xl p-4 md:p-8 text-slate-100">
     <header class="mb-6">
-      <h1 class="text-xl md:text-3xl font-bold tracking-tight mb-2">
-        마니또 페어 매칭기 🎁
-      </h1>
-      <p class="text-xs md:text-base text-slate-300 leading-relaxed">
-        사람 이름을 쉼표( , )로 구분해서 최대 50명까지 입력한 뒤, 랜덤 매칭 버튼을 누르면
-        <span class="font-semibold text-indigo-300">2~3인 그룹 페어</span> 또는
-        <span class="font-semibold text-emerald-300">순환 매칭</span> 중 원하는 방식으로 마니또를 만들 수 있습니다.
-      </p>
+      <!-- ✅ 타이틀 + 우상단 언어 전환 -->
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <h1 id="hTitle" class="text-xl md:text-3xl font-bold tracking-tight mb-2">
+            마니또 페어 매칭기 🎁
+          </h1>
+          <p id="hDesc" class="text-xs md:text-base text-slate-300 leading-relaxed">
+            사람 이름을 쉼표( , )로 구분해서 최대 50명까지 입력한 뒤, 랜덤 매칭 버튼을 누르면
+            <span class="font-semibold text-indigo-300">2~3인 그룹 페어</span> 또는
+            <span class="font-semibold text-emerald-300">순환 매칭</span> 중 원하는 방식으로 마니또를 만들 수 있습니다.
+          </p>
+        </div>
+
+        <div class="shrink-0">
+          <label for="langSelect" class="sr-only">Language</label>
+          <select
+            id="langSelect"
+            class="rounded-xl border border-slate-600 bg-slate-900/70 px-3 py-2 text-xs md:text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+          </select>
+        </div>
+      </div>
     </header>
 
     <!-- 입력 영역 -->
     <section class="mb-6">
       <div class="flex items-center justify-between gap-2 mb-2">
-        <label for="namesInput" class="text-sm font-medium text-slate-200">
+        <label id="labelNames" for="namesInput" class="text-sm font-medium text-slate-200">
           이름 목록
         </label>
         <span id="countBadge" class="text-[11px] rounded-full px-3 py-1 bg-slate-700 text-slate-200 whitespace-nowrap">
@@ -112,7 +127,7 @@
         class="w-full h-32 md:h-36 resize-none rounded-xl border border-slate-600 bg-slate-900/70 px-3 py-2 text-base md:text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-slate-500"
         placeholder="예시&#10;김민수, 이영희, 박철수, 정해진"
       ></textarea>
-      <p class="mt-2 text-[11px] md:text-xs text-slate-400 leading-relaxed">
+      <p id="namesHelp" class="mt-2 text-[11px] md:text-xs text-slate-400 leading-relaxed">
         · 쉼표( , ) 기준으로 이름을 구분해 주세요. 예) 김민수, 이영희, 박철수<br />
         · 공백은 자동으로 제거되고, 비어 있는 이름은 무시됩니다.
       </p>
@@ -120,7 +135,7 @@
 
     <!-- 매칭 방식 선택 -->
     <section class="mb-4 text-xs md:text-sm">
-      <p class="mb-1 text-slate-300 font-medium">매칭 방식</p>
+      <p id="matchTypeTitle" class="mb-1 text-slate-300 font-medium">매칭 방식</p>
       <div class="flex flex-col sm:flex-row gap-2">
         <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-600 cursor-pointer">
           <input
@@ -131,8 +146,8 @@
             checked
           />
           <span class="flex flex-col">
-            <span class="font-semibold text-slate-100">그룹 페어 매칭</span>
-            <span class="text-[11px] text-slate-400">
+            <span id="matchGroupTitle" class="font-semibold text-slate-100">그룹 페어 매칭</span>
+            <span id="matchGroupDesc" class="text-[11px] text-slate-400">
               2명씩(마지막은 필요 시 3명) 그룹으로 묶어서 그룹 안에서 서로 선물 교환
             </span>
           </span>
@@ -145,8 +160,8 @@
             class="accent-emerald-500"
           />
           <span class="flex flex-col">
-            <span class="font-semibold text-slate-100">랜덤 순환 매칭</span>
-            <span class="text-[11px] text-slate-400">
+            <span id="matchCycleTitle" class="font-semibold text-slate-100">랜덤 순환 매칭</span>
+            <span id="matchCycleDesc" class="text-[11px] text-slate-400">
               A→B→C→…→A 처럼 한 줄로 이어지는 시크릿 산타 순환 구조
             </span>
           </span>
@@ -191,7 +206,7 @@
 
     <!-- 보기 모드 토글 -->
     <div class="mb-4 flex flex-wrap items-center gap-2 text-xs md:text-sm">
-      <span class="text-slate-300">보기 모드:</span>
+      <span id="viewModeLabel" class="text-slate-300">보기 모드:</span>
       <button
         id="viewAllButton"
         class="px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-indigo-500 text-white border border-indigo-400"
@@ -210,11 +225,11 @@
 
     <!-- 결과 영역 -->
     <section>
-      <h2 class="text-base md:text-lg font-semibold mb-3 text-slate-100">
+      <h2 id="resultTitle" class="text-base md:text-lg font-semibold mb-3 text-slate-100">
         매칭 결과
       </h2>
       <div id="resultContainer" class="space-y-3 text-sm md:text-base text-slate-200">
-        <p class="text-slate-400 text-sm">
+        <p id="resultEmpty" class="text-slate-400 text-sm">
           아직 매칭을 시작하지 않았어요. 참가자 이름을 입력하고 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼을 눌러주세요.
         </p>
       </div>
@@ -224,21 +239,21 @@
     <!-- 안내/가이드(검색/공유 최적화용 콘텐츠) -->
     <section class="mt-10 space-y-8">
       <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
-        <h2 class="text-lg md:text-xl font-semibold mb-2">3분 사용법</h2>
-        <ol class="list-decimal pl-5 text-sm md:text-base text-slate-200 space-y-1">
+        <h2 id="guideTitle" class="text-lg md:text-xl font-semibold mb-2">3분 사용법</h2>
+        <ol id="guideList" class="list-decimal pl-5 text-sm md:text-base text-slate-200 space-y-1">
           <li>이름을 쉼표(,)로 구분해 입력합니다. (최대 50명)</li>
           <li><b>그룹 페어</b> 또는 <b>순환 매칭</b> 중 방식을 선택합니다.</li>
           <li><b>랜덤 매칭 시작</b>을 누르고 결과를 확인합니다.</li>
           <li>필요하면 <b>CSV 다운로드</b>로 결과를 저장/공유하세요.</li>
         </ol>
-        <p class="mt-3 text-xs text-slate-400">
+        <p id="guideFoot" class="mt-3 text-xs text-slate-400">
           * 이 페이지는 입력한 이름을 서버로 보내지 않고, 브라우저에서만 처리합니다.
         </p>
       </div>
 
       <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
-        <h2 class="text-lg md:text-xl font-semibold mb-2">추천 사용 시나리오</h2>
-        <ul class="list-disc pl-5 text-sm md:text-base text-slate-200 space-y-1">
+        <h2 id="scenarioTitle" class="text-lg md:text-xl font-semibold mb-2">추천 사용 시나리오</h2>
+        <ul id="scenarioList" class="list-disc pl-5 text-sm md:text-base text-slate-200 space-y-1">
           <li>회사 연말/신년회 마니또(시크릿 산타)</li>
           <li>팀 워크숍 아이스브레이킹(2~3인 그룹 선물 교환)</li>
           <li>학교/동아리 이벤트(인원 많아도 빠르게 매칭)</li>
@@ -246,30 +261,30 @@
       </div>
 
       <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
-        <h2 class="text-lg md:text-xl font-semibold mb-2">자주 묻는 질문(FAQ)</h2>
+        <h2 id="faqTitle" class="text-lg md:text-xl font-semibold mb-2">자주 묻는 질문(FAQ)</h2>
         <div class="space-y-4 text-sm md:text-base text-slate-200">
           <div>
-            <p class="font-semibold">Q. 마니또 매칭은 공정한가요?</p>
-            <p class="text-slate-300">A. 참가자 목록을 무작위로 섞은 뒤 규칙(그룹 2~3인 또는 순환)에 따라 결과를 생성합니다.</p>
+            <p id="faqQ1" class="font-semibold">Q. 마니또 매칭은 공정한가요?</p>
+            <p id="faqA1" class="text-slate-300">A. 참가자 목록을 무작위로 섞은 뒤 규칙(그룹 2~3인 또는 순환)에 따라 결과를 생성합니다.</p>
           </div>
           <div>
-            <p class="font-semibold">Q. 2~3인 그룹으로 랜덤 매칭할 수 있나요?</p>
-            <p class="text-slate-300">A. 네. 그룹 페어 매칭은 기본 2인, 인원이 홀수로 남는 경우 마지막 그룹을 3인으로 묶습니다.</p>
+            <p id="faqQ2" class="font-semibold">Q. 2~3인 그룹으로 랜덤 매칭할 수 있나요?</p>
+            <p id="faqA2" class="text-slate-300">A. 네. 그룹 페어 매칭은 기본 2인, 인원이 홀수로 남는 경우 마지막 그룹을 3인으로 묶습니다.</p>
           </div>
           <div>
-            <p class="font-semibold">Q. 순환 매칭은 무엇인가요?</p>
-            <p class="text-slate-300">A. A→B→C→…→A 형태로 순환 구조를 만들고, 각 사람은 다음 사람에게 선물을 주는 방식입니다.</p>
+            <p id="faqQ3" class="font-semibold">Q. 순환 매칭은 무엇인가요?</p>
+            <p id="faqA3" class="text-slate-300">A. A→B→C→…→A 형태로 순환 구조를 만들고, 각 사람은 다음 사람에게 선물을 주는 방식입니다.</p>
           </div>
           <div>
-            <p class="font-semibold">Q. 입력한 이름이 저장되나요?</p>
-            <p class="text-slate-300">A. 이 페이지의 매칭 로직은 브라우저에서 실행되며, 이름을 서버로 전송하거나 저장하지 않습니다(페이지 코드 기준).</p>
+            <p id="faqQ4" class="font-semibold">Q. 입력한 이름이 저장되나요?</p>
+            <p id="faqA4" class="text-slate-300">A. 이 페이지의 매칭 로직은 브라우저에서 실행되며, 이름을 서버로 전송하거나 저장하지 않습니다(페이지 코드 기준).</p>
           </div>
         </div>
       </div>
 
       <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
-        <h2 class="text-lg md:text-xl font-semibold mb-2">공유 팁</h2>
-        <p class="text-sm md:text-base text-slate-200">
+        <h2 id="shareTitle" class="text-lg md:text-xl font-semibold mb-2">공유 팁</h2>
+        <p id="shareDesc" class="text-sm md:text-base text-slate-200">
           단체 채팅방(카톡/슬랙)에 링크를 올리고 “이름은 쉼표로 입력 → 랜덤 매칭 시작 → (비밀보기로 각자 확인)” 한 줄만 안내하면 운영이 훨씬 부드럽습니다.
         </p>
       </div>
@@ -277,7 +292,6 @@
   </div>
 
     <!-- ✅ PC/모바일 모두 하단 고정 배너 -->
-
     <div class="fixed bottom-0 left-0 right-0 z-50">
       <div class="mx-auto w-[320px] h-[50px]">
         <ins class="kakao_ad_area" style="display:none;"
@@ -286,8 +300,6 @@
           data-ad-height="50"></ins>
       </div>
     </div>
-
-  
 
   <!-- ✅ 카카오 광고 스크립트: body 하단에 1회만 -->
   <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
@@ -303,7 +315,301 @@
     const viewAllButton = document.getElementById('viewAllButton');
     const viewSecretButton = document.getElementById('viewSecretButton');
     const copyLinkButton = document.getElementById('copyLinkButton');
+    const langSelect = document.getElementById('langSelect');
 
+    // ---------- i18n ----------
+    const I18N = {
+      ko: {
+        pageTitle: "마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭",
+        metaDesc: "엑셀 없이 마니또를 랜덤 매칭해보세요. 2~3인 그룹 페어 매칭과 A→B→C→A 순환(시크릿 산타) 매칭을 지원하며, 결과는 CSV로 다운로드할 수 있습니다. 입력한 이름은 브라우저에서만 처리됩니다.",
+        ogTitle: "마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭",
+        ogDesc: "엑셀 없이 마니또 랜덤 매칭! 2~3인 그룹 페어 / 순환(시크릿 산타) 매칭 지원, CSV 다운로드. 입력한 이름은 브라우저에서만 처리됩니다.",
+        hTitle: "마니또 페어 매칭기 🎁",
+        hDescHtml:
+          '사람 이름을 쉼표( , )로 구분해서 최대 50명까지 입력한 뒤, 랜덤 매칭 버튼을 누르면 ' +
+          '<span class="font-semibold text-indigo-300">2~3인 그룹 페어</span> 또는 ' +
+          '<span class="font-semibold text-emerald-300">순환 매칭</span> 중 원하는 방식으로 마니또를 만들 수 있습니다.',
+        labelNames: "이름 목록",
+        namesPlaceholder: "예시\n김민수, 이영희, 박철수, 정해진",
+        namesHelpHtml:
+          '· 쉼표( , ) 기준으로 이름을 구분해 주세요. 예) 김민수, 이영희, 박철수<br />' +
+          '· 공백은 자동으로 제거되고, 비어 있는 이름은 무시됩니다.',
+        matchTypeTitle: "매칭 방식",
+        matchGroupTitle: "그룹 페어 매칭",
+        matchGroupDesc: "2명씩(마지막은 필요 시 3명) 그룹으로 묶어서 그룹 안에서 서로 선물 교환",
+        matchCycleTitle: "랜덤 순환 매칭",
+        matchCycleDesc: "A→B→C→…→A 처럼 한 줄로 이어지는 시크릿 산타 순환 구조",
+        btnShuffle: "🔀 랜덤 매칭 시작",
+        btnClear: "초기화",
+        btnCsv: "📥 CSV 다운로드",
+        btnCopy: "🔗 링크 복사",
+        viewModeLabel: "보기 모드:",
+        viewAll: "전체보기",
+        viewSecret: "마니또 비밀보기",
+        resultTitle: "매칭 결과",
+        resultEmptyHtml:
+          '아직 매칭을 시작하지 않았어요. 참가자 이름을 입력하고 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼을 눌러주세요.',
+        errMin2: "최소 2명 이상 입력해야 마니또 매칭이 가능합니다.",
+        errMax50: "최대 50명까지만 매칭할 수 있습니다. 인원을 줄여주세요.",
+        resultMin2: "참가자를 최소 2명 이상 입력해 주세요.",
+        noResultYetHtml:
+          '아직 매칭 결과가 없습니다. 먼저 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼으로 매칭을 실행해 주세요.',
+        secretDescHtml:
+          '아래에서 자신의 이름을 선택하면, <span class="font-semibold text-emerald-300">내 마니또가 누구인지</span>만 볼 수 있습니다. (각 그룹 안에서 원형으로 연결됩니다.)',
+        selectPlaceholder: "이름을 선택하세요",
+        btnMyManitto: "내 마니또 보기",
+        secretDefault: "이름을 선택하고 버튼을 눌러 마니또를 확인하세요.",
+        secretPickFirst: "먼저 위에서 자신의 이름을 선택해 주세요.",
+        secretNotFound: "선택한 이름에 대한 마니또 정보를 찾을 수 없습니다.",
+        secretResultHtml: (me, target) =>
+          `<span class="font-semibold text-emerald-300">${me}</span>님의 마니또는 <span class="font-semibold text-amber-300">${target}</span> 입니다. 🤫`,
+        tagAllCycle: "전체 순환",
+        tagCycle: "순환 그룹",
+        tagPair: "PAIR",
+        tagGroup3: "3인 그룹",
+        groupLabel: (n) => `그룹 ${n}`,
+        toastCopied: "링크를 복사했어요!",
+        guideTitle: "3분 사용법",
+        guideListHtml:
+          "<li>이름을 쉼표(,)로 구분해 입력합니다. (최대 50명)</li>" +
+          "<li><b>그룹 페어</b> 또는 <b>순환 매칭</b> 중 방식을 선택합니다.</li>" +
+          "<li><b>랜덤 매칭 시작</b>을 누르고 결과를 확인합니다.</li>" +
+          "<li>필요하면 <b>CSV 다운로드</b>로 결과를 저장/공유하세요.</li>",
+        guideFoot: "* 이 페이지는 입력한 이름을 서버로 보내지 않고, 브라우저에서만 처리합니다.",
+        scenarioTitle: "추천 사용 시나리오",
+        scenarioListHtml:
+          "<li>회사 연말/신년회 마니또(시크릿 산타)</li>" +
+          "<li>팀 워크숍 아이스브레이킹(2~3인 그룹 선물 교환)</li>" +
+          "<li>학교/동아리 이벤트(인원 많아도 빠르게 매칭)</li>",
+        faqTitle: "자주 묻는 질문(FAQ)",
+        faqQ1: "Q. 마니또 매칭은 공정한가요?",
+        faqA1: "A. 참가자 목록을 무작위로 섞은 뒤 규칙(그룹 2~3인 또는 순환)에 따라 결과를 생성합니다.",
+        faqQ2: "Q. 2~3인 그룹으로 랜덤 매칭할 수 있나요?",
+        faqA2: "A. 네. 그룹 페어 매칭은 기본 2인, 인원이 홀수로 남는 경우 마지막 그룹을 3인으로 묶습니다.",
+        faqQ3: "Q. 순환 매칭은 무엇인가요?",
+        faqA3: "A. A→B→C→…→A 형태로 순환 구조를 만들고, 각 사람은 다음 사람에게 선물을 주는 방식입니다.",
+        faqQ4: "Q. 입력한 이름이 저장되나요?",
+        faqA4: "A. 이 페이지의 매칭 로직은 브라우저에서 실행되며, 이름을 서버로 전송하거나 저장하지 않습니다(페이지 코드 기준).",
+        shareTitle: "공유 팁",
+        shareDesc:
+          '단체 채팅방(카톡/슬랙)에 링크를 올리고 “이름은 쉼표로 입력 → 랜덤 매칭 시작 → (비밀보기로 각자 확인)” 한 줄만 안내하면 운영이 훨씬 부드럽습니다.'
+      },
+      en: {
+        pageTitle: "Secret Santa Matcher | Random · 2–3 Group · Cycle",
+        metaDesc: "Match Secret Santa without spreadsheets. Supports 2–3 person group pairing and A→B→C→A cycle matching. Download results as CSV. Names are processed only in your browser.",
+        ogTitle: "Secret Santa Matcher | Random · 2–3 Group · Cycle",
+        ogDesc: "Random Secret Santa matching: 2–3 group pairing / cycle matching, CSV download. Names stay in your browser.",
+        hTitle: "Secret Santa Matcher 🎁",
+        hDescHtml:
+          'Enter up to 50 names separated by commas. Click the match button to generate either ' +
+          '<span class="font-semibold text-indigo-300">2–3 person group pairing</span> or ' +
+          '<span class="font-semibold text-emerald-300">cycle matching</span>.',
+        labelNames: "Name list",
+        namesPlaceholder: "Example\nAlex, Jamie, Taylor, Morgan",
+        namesHelpHtml:
+          '· Separate names with commas (,). Example: Alex, Jamie, Taylor<br />' +
+          '· Extra spaces are removed; empty entries are ignored.',
+        matchTypeTitle: "Matching mode",
+        matchGroupTitle: "Group pairing",
+        matchGroupDesc: "Pairs of 2 (last group may be 3 if needed). Exchange gifts within each group.",
+        matchCycleTitle: "Random cycle",
+        matchCycleDesc: "A→B→C→…→A style cycle (Secret Santa ring).",
+        btnShuffle: "🔀 Start matching",
+        btnClear: "Reset",
+        btnCsv: "📥 Download CSV",
+        btnCopy: "🔗 Copy link",
+        viewModeLabel: "View:",
+        viewAll: "Show all",
+        viewSecret: "Secret view",
+        resultTitle: "Results",
+        resultEmptyHtml:
+          'No matching yet. Enter names and click <span class="font-semibold text-indigo-300">[Start matching]</span>.',
+        errMin2: "Please enter at least 2 names.",
+        errMax50: "Up to 50 names only. Please reduce the list.",
+        resultMin2: "Please enter at least 2 participants.",
+        noResultYetHtml:
+          'No results yet. Click <span class="font-semibold text-indigo-300">[Start matching]</span> first.',
+        secretDescHtml:
+          'Select your name to reveal <span class="font-semibold text-emerald-300">only your own target</span>. (Cyclic within each group.)',
+        selectPlaceholder: "Select your name",
+        btnMyManitto: "Reveal my target",
+        secretDefault: "Select a name and click to reveal your target.",
+        secretPickFirst: "Please select your name first.",
+        secretNotFound: "Could not find a target for the selected name.",
+        secretResultHtml: (me, target) =>
+          `<span class="font-semibold text-emerald-300">${me}</span>'s target is <span class="font-semibold text-amber-300">${target}</span>. 🤫`,
+        tagAllCycle: "FULL CYCLE",
+        tagCycle: "CYCLE",
+        tagPair: "PAIR",
+        tagGroup3: "GROUP OF 3",
+        groupLabel: (n) => `Group ${n}`,
+        toastCopied: "Link copied!",
+        guideTitle: "How to use (3 min)",
+        guideListHtml:
+          "<li>Enter names separated by commas (max 50).</li>" +
+          "<li>Choose <b>Group pairing</b> or <b>Random cycle</b>.</li>" +
+          "<li>Click <b>Start matching</b> to generate results.</li>" +
+          "<li>Use <b>Download CSV</b> to save/share.</li>",
+        guideFoot: "* Names are processed in your browser only (not uploaded).",
+        scenarioTitle: "Suggested scenarios",
+        scenarioListHtml:
+          "<li>Office Secret Santa</li>" +
+          "<li>Team workshop icebreaker (2–3 group exchange)</li>" +
+          "<li>School/club events (fast for large groups)</li>",
+        faqTitle: "FAQ",
+        faqQ1: "Q. Is the matching fair?",
+        faqA1: "A. We shuffle the list and generate results based on the selected rule (group or cycle).",
+        faqQ2: "Q. Can I do 2–3 person group matching?",
+        faqA2: "A. Yes. Group pairing creates pairs of 2; if one group remains, it becomes 3.",
+        faqQ3: "Q. What is cycle matching?",
+        faqA3: "A. A→B→C→…→A: each person gives to the next person in the cycle.",
+        faqQ4: "Q. Are names stored?",
+        faqA4: "A. No. The logic runs in your browser and does not send/store names on a server.",
+        shareTitle: "Sharing tip",
+        shareDesc: 'Post the link in chat and say: “Enter names with commas → Start matching → (Use Secret view to check your target)”.'
+      },
+      ja: {
+        pageTitle: "マニトー（シークレットサンタ）マッチャー | ランダム・グループ・循環",
+        metaDesc: "表計算なしでシークレットサンタをランダムに割り当てます。2～3人グループと A→B→C→A の循環マッチに対応。CSVでダウンロード可能。名前はブラウザ内でのみ処理されます。",
+        ogTitle: "マニトー（シークレットサンタ）マッチャー | ランダム・グループ・循環",
+        ogDesc: "シークレットサンタをランダム割り当て：2～3人グループ／循環マッチ、CSVダウンロード。名前はブラウザ内のみ。",
+        hTitle: "マニトー マッチャー 🎁",
+        hDescHtml:
+          '名前をカンマ（,）区切りで最大50名まで入力し、ボタンを押すと ' +
+          '<span class="font-semibold text-indigo-300">2～3人グループ</span> または ' +
+          '<span class="font-semibold text-emerald-300">循環マッチ</span> を作成できます。',
+        labelNames: "名前リスト",
+        namesPlaceholder: "例\n太郎, 花子, 次郎, 美咲",
+        namesHelpHtml:
+          '・カンマ（,）で区切って入力してください。例：太郎, 花子, 次郎<br />' +
+          '・空白は自動で削除され、空の要素は無視されます。',
+        matchTypeTitle: "マッチ方式",
+        matchGroupTitle: "グループ（2～3人）",
+        matchGroupDesc: "基本は2人。必要なら最後のグループを3人にしてグループ内で交換します。",
+        matchCycleTitle: "ランダム循環",
+        matchCycleDesc: "A→B→C→…→A のような循環（シークレットサンタ）構造です。",
+        btnShuffle: "🔀 マッチ開始",
+        btnClear: "リセット",
+        btnCsv: "📥 CSVダウンロード",
+        btnCopy: "🔗 リンクコピー",
+        viewModeLabel: "表示:",
+        viewAll: "全体表示",
+        viewSecret: "秘密表示",
+        resultTitle: "結果",
+        resultEmptyHtml:
+          'まだマッチしていません。名前を入力して <span class="font-semibold text-indigo-300">[マッチ開始]</span> を押してください。',
+        errMin2: "少なくとも2名以上入力してください。",
+        errMax50: "最大50名までです。人数を減らしてください。",
+        resultMin2: "参加者は2名以上必要です。",
+        noResultYetHtml:
+          '結果がありません。まず <span class="font-semibold text-indigo-300">[マッチ開始]</span> を押してください。',
+        secretDescHtml:
+          '自分の名前を選ぶと、<span class="font-semibold text-emerald-300">自分の相手だけ</span>を確認できます。（各グループ内で循環）',
+        selectPlaceholder: "名前を選択",
+        btnMyManitto: "相手を見る",
+        secretDefault: "名前を選んでボタンを押してください。",
+        secretPickFirst: "先に自分の名前を選んでください。",
+        secretNotFound: "選択した名前の相手が見つかりません。",
+        secretResultHtml: (me, target) =>
+          `<span class="font-semibold text-emerald-300">${me}</span> の相手は <span class="font-semibold text-amber-300">${target}</span> です。🤫`,
+        tagAllCycle: "全体循環",
+        tagCycle: "循環",
+        tagPair: "ペア",
+        tagGroup3: "3人",
+        groupLabel: (n) => `グループ ${n}`,
+        toastCopied: "リンクをコピーしました！",
+        guideTitle: "使い方（3分）",
+        guideListHtml:
+          "<li>名前をカンマ区切りで入力（最大50名）。</li>" +
+          "<li><b>グループ</b> か <b>循環</b> を選択。</li>" +
+          "<li><b>マッチ開始</b> を押して結果を確認。</li>" +
+          "<li><b>CSVダウンロード</b> で保存・共有できます。</li>",
+        guideFoot: "※ 名前はサーバーに送信されず、ブラウザ内でのみ処理されます。",
+        scenarioTitle: "おすすめシーン",
+        scenarioListHtml:
+          "<li>会社のシークレットサンタ</li>" +
+          "<li>ワークショップのアイスブレイク（2～3人交換）</li>" +
+          "<li>学校・サークルイベント（大人数でも素早く）</li>",
+        faqTitle: "よくある質問",
+        faqQ1: "Q. 公平ですか？",
+        faqA1: "A. リストをシャッフルし、選択したルール（グループ／循環）で生成します。",
+        faqQ2: "Q. 2～3人グループでできますか？",
+        faqA2: "A. はい。基本は2人、余りが出る場合は最後を3人にします。",
+        faqQ3: "Q. 循環マッチとは？",
+        faqA3: "A. A→B→C→…→A の循環で、各人が次の人に渡す方式です。",
+        faqQ4: "Q. 名前は保存されますか？",
+        faqA4: "A. いいえ。処理はブラウザ内で行われ、サーバーに送信・保存しません。",
+        shareTitle: "共有のコツ",
+        shareDesc: "チャットにリンクを貼って「カンマで入力→マッチ開始→（秘密表示で各自確認）」だけ案内するとスムーズです。"
+      }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'ko';
+    function t() { return I18N[currentLang]; }
+
+    function applyLanguage() {
+      const d = t();
+      document.documentElement.lang = currentLang;
+      document.getElementById('pageTitle').textContent = d.pageTitle;
+      document.getElementById('metaDescription').setAttribute('content', d.metaDesc);
+      document.getElementById('ogTitle').setAttribute('content', d.ogTitle);
+      document.getElementById('ogDescription').setAttribute('content', d.ogDesc);
+
+      document.getElementById('hTitle').textContent = d.hTitle;
+      document.getElementById('hDesc').innerHTML = d.hDescHtml;
+
+      document.getElementById('labelNames').textContent = d.labelNames;
+      namesInput.placeholder = d.namesPlaceholder;
+      document.getElementById('namesHelp').innerHTML = d.namesHelpHtml;
+
+      document.getElementById('matchTypeTitle').textContent = d.matchTypeTitle;
+      document.getElementById('matchGroupTitle').textContent = d.matchGroupTitle;
+      document.getElementById('matchGroupDesc').textContent = d.matchGroupDesc;
+      document.getElementById('matchCycleTitle').textContent = d.matchCycleTitle;
+      document.getElementById('matchCycleDesc').textContent = d.matchCycleDesc;
+
+      shuffleButton.textContent = d.btnShuffle;
+      clearButton.textContent = d.btnClear;
+      downloadCsvButton.textContent = d.btnCsv;
+      if (copyLinkButton) copyLinkButton.textContent = d.btnCopy;
+
+      document.getElementById('viewModeLabel').textContent = d.viewModeLabel;
+      viewAllButton.textContent = d.viewAll;
+      viewSecretButton.textContent = d.viewSecret;
+
+      document.getElementById('resultTitle').textContent = d.resultTitle;
+      const emptyEl = document.getElementById('resultEmpty');
+      if (emptyEl) emptyEl.innerHTML = d.resultEmptyHtml;
+
+      // Guide/FAQ/Share
+      document.getElementById('guideTitle').textContent = d.guideTitle;
+      document.getElementById('guideList').innerHTML = d.guideListHtml;
+      document.getElementById('guideFoot').textContent = d.guideFoot;
+
+      document.getElementById('scenarioTitle').textContent = d.scenarioTitle;
+      document.getElementById('scenarioList').innerHTML = d.scenarioListHtml;
+
+      document.getElementById('faqTitle').textContent = d.faqTitle;
+      document.getElementById('faqQ1').textContent = d.faqQ1;
+      document.getElementById('faqA1').textContent = d.faqA1;
+      document.getElementById('faqQ2').textContent = d.faqQ2;
+      document.getElementById('faqA2').textContent = d.faqA2;
+      document.getElementById('faqQ3').textContent = d.faqQ3;
+      document.getElementById('faqA3').textContent = d.faqA3;
+      document.getElementById('faqQ4').textContent = d.faqQ4;
+      document.getElementById('faqA4').textContent = d.faqA4;
+
+      document.getElementById('shareTitle').textContent = d.shareTitle;
+      document.getElementById('shareDesc').textContent = d.shareDesc;
+
+      // count badge 다시 렌더(언어에 따라 '명' 같은 문구는 유지하되 여기선 숫자만 쓰므로 OK)
+      updateCount();
+
+      // 결과가 이미 있으면 현재 언어로 다시 렌더
+      if (currentPairs.length) renderView();
+    }
+
+    // ---------- util ----------
     function toast(message) {
       const t = document.createElement('div');
       t.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[9999] rounded-xl border border-slate-600 bg-slate-900/90 px-4 py-2 text-sm text-slate-100 shadow-2xl';
@@ -326,6 +632,7 @@
 
     function updateCount() {
       const names = getCleanNames();
+      // 언어별 표기까지 하고 싶으면 여기서 분기하면 됨. 현재는 기존 포맷 유지.
       countBadge.textContent = names.length + ' / 50명';
     }
 
@@ -354,7 +661,6 @@
       const pairs = [];
 
       for (let i = 0; i < shuffled.length; i += 2) {
-        // 남은 인원이 3명일 때는 3인 그룹으로 묶기
         if (shuffled.length - i === 3) {
           pairs.push(shuffled.slice(i, i + 3));
           break;
@@ -368,13 +674,14 @@
     // 전체를 한 줄로 이어지는 순환 매칭 (A→B→C→…→A)
     function makeRandomCycle(names) {
       const shuffled = shuffleArray(names);
-      return [shuffled]; // 하나의 큰 그룹으로 다룬다
+      return [shuffled];
     }
 
     function renderAllView() {
+      const d = t();
+
       if (!currentPairs.length) {
-        resultContainer.innerHTML =
-          '<p class="text-slate-400 text-sm">아직 매칭 결과가 없습니다. 먼저 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼으로 매칭을 실행해 주세요.</p>';
+        resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.noResultYetHtml}</p>`;
         return;
       }
 
@@ -390,20 +697,17 @@
         const arrow = currentMatchType === 'cycle' ? '  →  ' : '  ↔  ';
         let content = group.join(arrow);
         if (currentMatchType === 'cycle' && group.length > 1) {
-          // 순환임을 시각적으로 보여주기 위해 마지막에 다시 첫 사람 표시
           content = group.join('  →  ') + '  →  ' + group[0];
         }
 
         const label =
           currentMatchType === 'cycle'
-            ? (group.length === currentNames.length ? '전체 순환' : '순환 그룹')
-            : (group.length === 2 ? 'PAIR' : '3인 그룹');
+            ? (group.length === currentNames.length ? d.tagAllCycle : d.tagCycle)
+            : (group.length === 2 ? d.tagPair : d.tagGroup3);
 
         left.innerHTML = `
-          <p class="text-[11px] text-slate-400 mb-1">그룹 ${index + 1}</p>
-          <p class="font-semibold break-words">
-            ${content}
-          </p>
+          <p class="text-[11px] text-slate-400 mb-1">${d.groupLabel(index + 1)}</p>
+          <p class="font-semibold break-words">${content}</p>
         `;
 
         const tag = document.createElement('span');
@@ -421,7 +725,7 @@
       const map = {};
       currentPairs.forEach((group) => {
         group.forEach((name, idx) => {
-          const target = group[(idx + 1) % group.length]; // 원형 구조
+          const target = group[(idx + 1) % group.length];
           map[name] = target;
         });
       });
@@ -429,9 +733,10 @@
     }
 
     function renderSecretView() {
+      const d = t();
+
       if (!currentPairs.length) {
-        resultContainer.innerHTML =
-          '<p class="text-slate-400 text-sm">아직 매칭 결과가 없습니다. 먼저 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼으로 매칭을 실행해 주세요.</p>';
+        resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.noResultYetHtml}</p>`;
         return;
       }
 
@@ -442,8 +747,7 @@
 
       const desc = document.createElement('p');
       desc.className = 'text-[11px] md:text-sm text-slate-300 leading-relaxed';
-      desc.innerHTML =
-        '아래에서 자신의 이름을 선택하면, <span class="font-semibold text-emerald-300">내 마니또가 누구인지</span>만 볼 수 있습니다. (각 그룹 안에서 원형으로 연결됩니다.)';
+      desc.innerHTML = d.secretDescHtml;
       wrapper.appendChild(desc);
 
       const controlRow = document.createElement('div');
@@ -456,11 +760,11 @@
 
       const defaultOption = document.createElement('option');
       defaultOption.value = '';
-      defaultOption.textContent = '이름을 선택하세요';
+      defaultOption.textContent = d.selectPlaceholder;
       select.appendChild(defaultOption);
 
       const sortedNames = [...currentNames].sort((a, b) =>
-        a.localeCompare(b, 'ko')
+        a.localeCompare(b, currentLang === 'ja' ? 'ja' : (currentLang === 'en' ? 'en' : 'ko'))
       );
       sortedNames.forEach((name) => {
         const opt = document.createElement('option');
@@ -470,9 +774,9 @@
       });
 
       const btn = document.createElement('button');
-      btn.textContent = '내 마니또 보기';
+      btn.textContent = d.btnMyManitto;
       btn.className =
-        'md:w-32 inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 px-3 py-2 text-xs md:text-sm font-semibold text-slate-50 transition';
+        'md:w-40 inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 px-3 py-2 text-xs md:text-sm font-semibold text-slate-50 transition';
 
       controlRow.appendChild(select);
       controlRow.appendChild(btn);
@@ -482,7 +786,7 @@
       result.id = 'secretResult';
       result.className =
         'mt-2 text-sm md:text-base text-slate-200 bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-3';
-      result.textContent = '이름을 선택하고 버튼을 눌러 마니또를 확인하세요.';
+      result.textContent = d.secretDefault;
       wrapper.appendChild(result);
 
       resultContainer.innerHTML = '';
@@ -491,18 +795,15 @@
       btn.addEventListener('click', () => {
         const selected = select.value;
         if (!selected) {
-          result.textContent = '먼저 위에서 자신의 이름을 선택해 주세요.';
+          result.textContent = d.secretPickFirst;
           return;
         }
         const target = secretMap[selected];
         if (!target) {
-          result.textContent = '선택한 이름에 대한 마니또 정보를 찾을 수 없습니다.';
+          result.textContent = d.secretNotFound;
           return;
         }
-        result.innerHTML = `
-          <span class="font-semibold text-emerald-300">${selected}</span>님의 마니또는
-          <span class="font-semibold text-amber-300">${target}</span> 입니다. 🤫
-        `;
+        result.innerHTML = d.secretResultHtml(selected, target);
       });
     }
 
@@ -556,9 +857,7 @@
         )
         .join('\r\n');
 
-      const blob = new Blob([csvContent], {
-        type: 'text/csv;charset=utf-8;',
-      });
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -571,19 +870,19 @@
 
     shuffleButton.addEventListener('click', () => {
       clearError();
+      const d = t();
       const names = getCleanNames();
 
       if (names.length < 2) {
-        showError('최소 2명 이상 입력해야 마니또 매칭이 가능합니다.');
-        resultContainer.innerHTML =
-          '<p class="text-slate-400 text-sm">참가자를 최소 2명 이상 입력해 주세요.</p>';
+        showError(d.errMin2);
+        resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.resultMin2}</p>`;
         currentPairs = [];
         updateDownloadButtonState();
         return;
       }
 
       if (names.length > 50) {
-        showError('최대 50명까지만 매칭할 수 있습니다. 인원을 줄여주세요.');
+        showError(d.errMax50);
         currentPairs = [];
         updateDownloadButtonState();
         return;
@@ -605,14 +904,16 @@
     });
 
     clearButton.addEventListener('click', () => {
+      const d = t();
       namesInput.value = '';
       currentPairs = [];
       currentNames = [];
       updateCount();
       clearError();
       updateDownloadButtonState();
-      resultContainer.innerHTML =
-        '<p class="text-slate-400 text-sm">아직 매칭을 시작하지 않았어요. 참가자 이름을 입력하고 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼을 눌러주세요.</p>';
+      resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.resultEmptyHtml}</p>`;
+      // 위 줄은 HTML을 포함하므로 아래처럼 안전하게 처리
+      resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.resultEmptyHtml}</p>`;
     });
 
     namesInput.addEventListener('input', updateCount);
@@ -621,26 +922,34 @@
     viewSecretButton.addEventListener('click', () => setViewMode('secret'));
 
     downloadCsvButton.addEventListener('click', downloadCSV);
+
     if (copyLinkButton) {
       copyLinkButton.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(window.location.href);
-          toast('링크를 복사했어요!');
+          toast(t().toastCopied);
         } catch (e) {
-          // fallback
           const tmp = document.createElement('input');
           tmp.value = window.location.href;
           document.body.appendChild(tmp);
           tmp.select();
           document.execCommand('copy');
           document.body.removeChild(tmp);
-          toast('링크를 복사했어요!');
+          toast(t().toastCopied);
         }
       });
     }
 
+    // ✅ 언어 선택 이벤트
+    langSelect.addEventListener('change', () => {
+      currentLang = langSelect.value;
+      localStorage.setItem('lang', currentLang);
+      applyLanguage();
+    });
 
     // 초기 세팅
+    langSelect.value = currentLang;
+    applyLanguage();
     updateCount();
     setViewMode('all');
     updateDownloadButtonState();

@@ -2,23 +2,47 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+
+  <!-- ✅ 필수 SEO -->
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <!-- ✅ 모바일 반응형 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ✅ Title / Description (언어별로 JS에서 동적 갱신) -->
+  <title id="pageTitle">마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭</title>
   <meta id="metaDescription" name="description" content="엑셀 없이 마니또를 랜덤 매칭해보세요. 2~3인 그룹 페어 매칭과 A→B→C→A 순환(시크릿 산타) 매칭을 지원하며, 결과는 CSV로 다운로드할 수 있습니다. 입력한 이름은 브라우저에서만 처리됩니다." />
-  <link rel="canonical" href="./" />
-  <!-- Open Graph (카톡/슬랙 공유용) -->
+
+  <!-- ✅ Canonical / OG URL / hreflang (JS에서 ?lang=ko|en|ja로 고정) -->
+  <link id="canonicalLink" rel="canonical" href="./" />
+  <link id="altKo" rel="alternate" hreflang="ko" href="./" />
+  <link id="altEn" rel="alternate" hreflang="en" href="./" />
+  <link id="altJa" rel="alternate" hreflang="ja" href="./" />
+  <link id="altX" rel="alternate" hreflang="x-default" href="./" />
+
+  <!-- ✅ Open Graph -->
   <meta property="og:type" content="website" />
   <meta id="ogTitle" property="og:title" content="마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭" />
   <meta id="ogDescription" property="og:description" content="엑셀 없이 마니또 랜덤 매칭! 2~3인 그룹 페어 / 순환(시크릿 산타) 매칭 지원, CSV 다운로드. 입력한 이름은 브라우저에서만 처리됩니다." />
-  <!-- og:image는 배포 후 실제 이미지 URL로 교체 권장 -->
-  <meta property="og:image" content="" />
-  <meta name="twitter:card" content="summary" />
-  <title id="pageTitle">마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭</title>
-  <!-- 모바일 반응형 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta id="ogUrl" property="og:url" content="" />
+  <!-- ✅ 배포 후 실제 절대경로 이미지로 유지 권장 -->
+  <meta id="ogImage" property="og:image" content="" />
+  <meta id="ogLocale" property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ja_JP" />
+
+  <!-- ✅ Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta id="twTitle" name="twitter:title" content="마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭" />
+  <meta id="twDescription" name="twitter:description" content="엑셀 없이 마니또 랜덤 매칭! 2~3인 그룹 페어 / 순환(시크릿 산타) 매칭 지원, CSV 다운로드." />
+  <meta id="twImage" name="twitter:image" content="" />
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- 구조화 데이터(검색 노출 도움): FAQ + 앱 정보 -->
-  <script type="application/ld+json">
+  <!-- ✅ 구조화 데이터(검색 노출 도움): 앱 정보 -->
+  <script type="application/ld+json" id="ldSoftware">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -30,7 +54,8 @@
   }
   </script>
 
-  <script type="application/ld+json">
+  <!-- ✅ 구조화 데이터(검색 노출 도움): FAQ -->
+  <script type="application/ld+json" id="ldFaq">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -78,14 +103,11 @@
     ]
   }
   </script>
-
 </head>
 
 <body class="min-h-screen bg-slate-900 flex justify-center px-3 py-4 md:px-4 md:py-8 pb-[70px]">
-
   <div class="w-full max-w-3xl bg-slate-800 rounded-2xl shadow-2xl p-4 md:p-8 text-slate-100">
     <header class="mb-6">
-      <!-- ✅ 타이틀 + 우상단 언어 전환 -->
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
           <h1 id="hTitle" class="text-xl md:text-3xl font-bold tracking-tight mb-2">
@@ -98,16 +120,28 @@
           </p>
         </div>
 
+        <!-- ✅ 언어 드롭다운: 밝은 화살표 -->
         <div class="shrink-0">
           <label for="langSelect" class="sr-only">Language</label>
-          <select
-            id="langSelect"
-            class="rounded-xl border border-slate-600 bg-slate-900/70 px-3 py-2 text-xs md:text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="ko">한국어</option>
-            <option value="en">English</option>
-            <option value="ja">日本語</option>
-          </select>
+          <div class="relative">
+            <select
+              id="langSelect"
+              class="appearance-none pr-10 rounded-xl border border-slate-600 bg-slate-900/70 px-3 py-2 text-xs md:text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="ko">한국어</option>
+              <option value="en">English</option>
+              <option value="ja">日本語</option>
+            </select>
+
+            <svg
+              class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-200"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" clip-rule="evenodd" />
+            </svg>
+          </div>
         </div>
       </div>
     </header>
@@ -115,9 +149,7 @@
     <!-- 입력 영역 -->
     <section class="mb-6">
       <div class="flex items-center justify-between gap-2 mb-2">
-        <label id="labelNames" for="namesInput" class="text-sm font-medium text-slate-200">
-          이름 목록
-        </label>
+        <label id="labelNames" for="namesInput" class="text-sm font-medium text-slate-200">이름 목록</label>
         <span id="countBadge" class="text-[11px] rounded-full px-3 py-1 bg-slate-700 text-slate-200 whitespace-nowrap">
           0 / 50명
         </span>
@@ -138,70 +170,48 @@
       <p id="matchTypeTitle" class="mb-1 text-slate-300 font-medium">매칭 방식</p>
       <div class="flex flex-col sm:flex-row gap-2">
         <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-600 cursor-pointer">
-          <input
-            type="radio"
-            name="matchType"
-            value="group"
-            class="accent-indigo-500"
-            checked
-          />
+          <input type="radio" name="matchType" value="group" class="accent-indigo-500" checked />
           <span class="flex flex-col">
             <span id="matchGroupTitle" class="font-semibold text-slate-100">그룹 페어 매칭</span>
-            <span id="matchGroupDesc" class="text-[11px] text-slate-400">
-              2명씩(마지막은 필요 시 3명) 그룹으로 묶어서 그룹 안에서 서로 선물 교환
-            </span>
+            <span id="matchGroupDesc" class="text-[11px] text-slate-400">2명씩(마지막은 필요 시 3명) 그룹으로 묶어서 그룹 안에서 서로 선물 교환</span>
           </span>
         </label>
         <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-600 cursor-pointer">
-          <input
-            type="radio"
-            name="matchType"
-            value="cycle"
-            class="accent-emerald-500"
-          />
+          <input type="radio" name="matchType" value="cycle" class="accent-emerald-500" />
           <span class="flex flex-col">
             <span id="matchCycleTitle" class="font-semibold text-slate-100">랜덤 순환 매칭</span>
-            <span id="matchCycleDesc" class="text-[11px] text-slate-400">
-              A→B→C→…→A 처럼 한 줄로 이어지는 시크릿 산타 순환 구조
-            </span>
+            <span id="matchCycleDesc" class="text-[11px] text-slate-400">A→B→C→…→A 처럼 한 줄로 이어지는 시크릿 산타 순환 구조</span>
           </span>
         </label>
       </div>
     </section>
 
     <!-- 경고/에러 메시지 -->
-    <div id="errorBox" class="hidden mb-4 rounded-xl border border-red-400 bg-red-500/10 px-4 py-3 text-xs md:text-sm text-red-200">
-    </div>
+    <div id="errorBox" class="hidden mb-4 rounded-xl border border-red-400 bg-red-500/10 px-4 py-3 text-xs md:text-sm text-red-200"></div>
 
     <!-- 버튼 -->
     <div class="flex flex-col md:flex-row gap-2 md:gap-4 mb-4">
       <button
         id="shuffleButton"
         class="w-full md:flex-1 inline-flex items-center justify-center rounded-xl bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-600 px-4 py-2 text-sm md:text-base font-semibold transition disabled:opacity-60 disabled:cursor-not-allowed"
-      >
-        🔀 랜덤 매칭 시작
-      </button>
+      >🔀 랜덤 매칭 시작</button>
+
       <button
         id="clearButton"
         class="w-full md:w-28 inline-flex items-center justify-center rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 active:bg-slate-900 px-4 py-2 text-sm md:text-base font-medium text-slate-200 transition"
-      >
-        초기화
-      </button>
+      >초기화</button>
+
       <button
         id="downloadCsvButton"
         class="w-full md:w-40 inline-flex items-center justify-center rounded-xl border border-emerald-500/60 bg-emerald-600/80 hover:bg-emerald-500 active:bg-emerald-700 px-4 py-2 text-sm md:text-base font-semibold text-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
         disabled
-      >
-        📥 CSV 다운로드
-      </button>
+      >📥 CSV 다운로드</button>
 
       <button
         id="copyLinkButton"
         class="w-full md:w-40 inline-flex items-center justify-center rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 active:bg-slate-900 px-4 py-2 text-sm md:text-base font-semibold text-slate-100 transition"
         type="button"
-      >
-        🔗 링크 복사
-      </button>
+      >🔗 링크 복사</button>
     </div>
 
     <!-- 보기 모드 토글 -->
@@ -211,32 +221,25 @@
         id="viewAllButton"
         class="px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-indigo-500 text-white border border-indigo-400"
         data-mode="all"
-      >
-        전체보기
-      </button>
+      >전체보기</button>
       <button
         id="viewSecretButton"
         class="px-3 py-1 rounded-full text-[11px] md:text-xs font-medium bg-slate-700 text-slate-100 border border-slate-500"
         data-mode="secret"
-      >
-        마니또 비밀보기
-      </button>
+      >마니또 비밀보기</button>
     </div>
 
     <!-- 결과 영역 -->
     <section>
-      <h2 id="resultTitle" class="text-base md:text-lg font-semibold mb-3 text-slate-100">
-        매칭 결과
-      </h2>
+      <h2 id="resultTitle" class="text-base md:text-lg font-semibold mb-3 text-slate-100">매칭 결과</h2>
       <div id="resultContainer" class="space-y-3 text-sm md:text-base text-slate-200">
         <p id="resultEmpty" class="text-slate-400 text-sm">
           아직 매칭을 시작하지 않았어요. 참가자 이름을 입력하고 <span class="font-semibold text-indigo-300">[랜덤 매칭 시작]</span> 버튼을 눌러주세요.
         </p>
       </div>
-
     </section>
 
-    <!-- 안내/가이드(검색/공유 최적화용 콘텐츠) -->
+    <!-- 안내/가이드 -->
     <section class="mt-10 space-y-8">
       <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5">
         <h2 id="guideTitle" class="text-lg md:text-xl font-semibold mb-2">3분 사용법</h2>
@@ -291,20 +294,72 @@
     </section>
   </div>
 
-    <!-- ✅ PC/모바일 모두 하단 고정 배너 -->
-    <div class="fixed bottom-0 left-0 right-0 z-50">
-      <div class="mx-auto w-[320px] h-[50px]">
-        <ins class="kakao_ad_area" style="display:none;"
-          data-ad-unit="DAN-YVle7J554fcfiAos"
-          data-ad-width="320"
-          data-ad-height="50"></ins>
-      </div>
+  <!-- ✅ PC/모바일 모두 하단 고정 배너 -->
+  <div class="fixed bottom-0 left-0 right-0 z-50">
+    <div class="mx-auto w-[320px] h-[50px]">
+      <ins class="kakao_ad_area" style="display:none;"
+        data-ad-unit="DAN-YVle7J554fcfiAos"
+        data-ad-width="320"
+        data-ad-height="50"></ins>
     </div>
-
-  <!-- ✅ 카카오 광고 스크립트: body 하단에 1회만 -->
+  </div>
   <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
   <script>
+    // =========================
+    // ✅ SEO URL 세팅 (중요)
+    // =========================
+    // 배포 도메인으로 고정하면 더 안정적 (예: "https://yourdomain.com")
+    const SITE_ORIGIN = ""; // <- 여기 비워두면 window.location.origin 사용
+
+    function getBaseUrl() {
+      const origin = SITE_ORIGIN && SITE_ORIGIN.trim() ? SITE_ORIGIN.trim().replace(/\/+$/, "") : window.location.origin;
+      const path = window.location.pathname.replace(/index\.html$/i, ""); // 깔끔하게
+      return origin + path;
+    }
+
+    function buildLangUrl(lang) {
+      const base = getBaseUrl();
+      return base + (base.includes("?") ? "&" : "?") + "lang=" + encodeURIComponent(lang);
+    }
+
+    function setSeoLinks(lang) {
+      const url = buildLangUrl(lang);
+
+      // canonical
+      const canonical = document.getElementById("canonicalLink");
+      if (canonical) canonical.href = url;
+
+      // hreflang
+      const altKo = document.getElementById("altKo");
+      const altEn = document.getElementById("altEn");
+      const altJa = document.getElementById("altJa");
+      const altX  = document.getElementById("altX");
+      if (altKo) altKo.href = buildLangUrl("ko");
+      if (altEn) altEn.href = buildLangUrl("en");
+      if (altJa) altJa.href = buildLangUrl("ja");
+      if (altX)  altX.href  = buildLangUrl("ko"); // 기본은 ko로
+
+      // og:url
+      const ogUrl = document.getElementById("ogUrl");
+      if (ogUrl) ogUrl.setAttribute("content", url);
+    }
+
+    // og:image / twitter:image (절대경로 권장)
+    function setShareImage() {
+      const base = getBaseUrl().replace(/\?.*$/, "");
+      // 배포 후 여기 파일을 실제로 올려두면 베스트: /og.png
+      const img = base.replace(/\/+$/, "") + "/og.png";
+
+      const ogImage = document.getElementById("ogImage");
+      const twImage = document.getElementById("twImage");
+      if (ogImage && !ogImage.getAttribute("content")) ogImage.setAttribute("content", img);
+      if (twImage && !twImage.getAttribute("content")) twImage.setAttribute("content", img);
+    }
+
+    // =========================
+    // App DOM
+    // =========================
     const namesInput = document.getElementById('namesInput');
     const shuffleButton = document.getElementById('shuffleButton');
     const clearButton = document.getElementById('clearButton');
@@ -324,6 +379,8 @@
         metaDesc: "엑셀 없이 마니또를 랜덤 매칭해보세요. 2~3인 그룹 페어 매칭과 A→B→C→A 순환(시크릿 산타) 매칭을 지원하며, 결과는 CSV로 다운로드할 수 있습니다. 입력한 이름은 브라우저에서만 처리됩니다.",
         ogTitle: "마니또 매칭기 | 랜덤 뽑기 · 2~3인 그룹 · 순환 매칭",
         ogDesc: "엑셀 없이 마니또 랜덤 매칭! 2~3인 그룹 페어 / 순환(시크릿 산타) 매칭 지원, CSV 다운로드. 입력한 이름은 브라우저에서만 처리됩니다.",
+        twDesc: "엑셀 없이 마니또 랜덤 매칭! 2~3인 그룹 페어 / 순환(시크릿 산타) 매칭 지원, CSV 다운로드.",
+        ogLocale: "ko_KR",
         hTitle: "마니또 페어 매칭기 🎁",
         hDescHtml:
           '사람 이름을 쉼표( , )로 구분해서 최대 50명까지 입력한 뒤, 랜덤 매칭 버튼을 누르면 ' +
@@ -394,11 +451,14 @@
         shareDesc:
           '단체 채팅방(카톡/슬랙)에 링크를 올리고 “이름은 쉼표로 입력 → 랜덤 매칭 시작 → (비밀보기로 각자 확인)” 한 줄만 안내하면 운영이 훨씬 부드럽습니다.'
       },
+
       en: {
         pageTitle: "Secret Santa Matcher | Random · 2–3 Group · Cycle",
         metaDesc: "Match Secret Santa without spreadsheets. Supports 2–3 person group pairing and A→B→C→A cycle matching. Download results as CSV. Names are processed only in your browser.",
         ogTitle: "Secret Santa Matcher | Random · 2–3 Group · Cycle",
         ogDesc: "Random Secret Santa matching: 2–3 group pairing / cycle matching, CSV download. Names stay in your browser.",
+        twDesc: "Random Secret Santa matching: 2–3 group pairing / cycle matching, CSV download.",
+        ogLocale: "en_US",
         hTitle: "Secret Santa Matcher 🎁",
         hDescHtml:
           'Enter up to 50 names separated by commas. Click the match button to generate either ' +
@@ -468,11 +528,14 @@
         shareTitle: "Sharing tip",
         shareDesc: 'Post the link in chat and say: “Enter names with commas → Start matching → (Use Secret view to check your target)”.'
       },
+
       ja: {
         pageTitle: "マニトー（シークレットサンタ）マッチャー | ランダム・グループ・循環",
         metaDesc: "表計算なしでシークレットサンタをランダムに割り当てます。2～3人グループと A→B→C→A の循環マッチに対応。CSVでダウンロード可能。名前はブラウザ内でのみ処理されます。",
         ogTitle: "マニトー（シークレットサンタ）マッチャー | ランダム・グループ・循環",
         ogDesc: "シークレットサンタをランダム割り当て：2～3人グループ／循環マッチ、CSVダウンロード。名前はブラウザ内のみ。",
+        twDesc: "2～3人グループ／循環マッチ、CSVダウンロード。名前はブラウザ内のみ。",
+        ogLocale: "ja_JP",
         hTitle: "マニトー マッチャー 🎁",
         hDescHtml:
           '名前をカンマ（,）区切りで最大50名まで入力し、ボタンを押すと ' +
@@ -544,17 +607,39 @@
       }
     };
 
-    let currentLang = localStorage.getItem('lang') || 'ko';
+    // ✅ URL의 ?lang= 로 언어를 결정 (SEO/공유 안정성)
+    function getLangFromUrl() {
+      const sp = new URLSearchParams(window.location.search);
+      const v = (sp.get("lang") || "").toLowerCase();
+      return (v === "ko" || v === "en" || v === "ja") ? v : "";
+    }
+
+    let currentLang = getLangFromUrl() || localStorage.getItem('lang') || 'ko';
     function t() { return I18N[currentLang]; }
+
+    function toast(message) {
+      const el = document.createElement('div');
+      el.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[9999] rounded-xl border border-slate-600 bg-slate-900/90 px-4 py-2 text-sm text-slate-100 shadow-2xl';
+      el.textContent = message;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1600);
+    }
 
     function applyLanguage() {
       const d = t();
       document.documentElement.lang = currentLang;
+
+      // SEO 메타 동기화
       document.getElementById('pageTitle').textContent = d.pageTitle;
       document.getElementById('metaDescription').setAttribute('content', d.metaDesc);
       document.getElementById('ogTitle').setAttribute('content', d.ogTitle);
       document.getElementById('ogDescription').setAttribute('content', d.ogDesc);
+      document.getElementById('ogLocale').setAttribute('content', d.ogLocale);
 
+      document.getElementById('twTitle').setAttribute('content', d.ogTitle);
+      document.getElementById('twDescription').setAttribute('content', d.twDesc);
+
+      // 본문 텍스트
       document.getElementById('hTitle').textContent = d.hTitle;
       document.getElementById('hDesc').innerHTML = d.hDescHtml;
 
@@ -581,7 +666,6 @@
       const emptyEl = document.getElementById('resultEmpty');
       if (emptyEl) emptyEl.innerHTML = d.resultEmptyHtml;
 
-      // Guide/FAQ/Share
       document.getElementById('guideTitle').textContent = d.guideTitle;
       document.getElementById('guideList').innerHTML = d.guideListHtml;
       document.getElementById('guideFoot').textContent = d.guideFoot;
@@ -602,25 +686,14 @@
       document.getElementById('shareTitle').textContent = d.shareTitle;
       document.getElementById('shareDesc').textContent = d.shareDesc;
 
-      // count badge 다시 렌더(언어에 따라 '명' 같은 문구는 유지하되 여기선 숫자만 쓰므로 OK)
       updateCount();
-
-      // 결과가 이미 있으면 현재 언어로 다시 렌더
       if (currentPairs.length) renderView();
     }
 
-    // ---------- util ----------
-    function toast(message) {
-      const t = document.createElement('div');
-      t.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[9999] rounded-xl border border-slate-600 bg-slate-900/90 px-4 py-2 text-sm text-slate-100 shadow-2xl';
-      t.textContent = message;
-      document.body.appendChild(t);
-      setTimeout(() => t.remove(), 1600);
-    }
-
+    // ---------- state ----------
     let currentPairs = [];
     let currentNames = [];
-    let currentViewMode = 'all';   // 'all' | 'secret'
+    let currentViewMode = 'all';    // 'all' | 'secret'
     let currentMatchType = 'group'; // 'group' | 'cycle'
 
     function getCleanNames() {
@@ -632,7 +705,6 @@
 
     function updateCount() {
       const names = getCleanNames();
-      // 언어별 표기까지 하고 싶으면 여기서 분기하면 됨. 현재는 기존 포맷 유지.
       countBadge.textContent = names.length + ' / 50명';
     }
 
@@ -655,11 +727,9 @@
       return a;
     }
 
-    // 2~3인 그룹 페어 매칭
     function makeGroupPairs(names) {
       const shuffled = shuffleArray(names);
       const pairs = [];
-
       for (let i = 0; i < shuffled.length; i += 2) {
         if (shuffled.length - i === 3) {
           pairs.push(shuffled.slice(i, i + 3));
@@ -671,7 +741,6 @@
       return pairs;
     }
 
-    // 전체를 한 줄로 이어지는 순환 매칭 (A→B→C→…→A)
     function makeRandomCycle(names) {
       const shuffled = shuffleArray(names);
       return [shuffled];
@@ -679,14 +748,12 @@
 
     function renderAllView() {
       const d = t();
-
       if (!currentPairs.length) {
         resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.noResultYetHtml}</p>`;
         return;
       }
 
       resultContainer.innerHTML = '';
-
       currentPairs.forEach((group, index) => {
         const card = document.createElement('div');
         card.className =
@@ -734,7 +801,6 @@
 
     function renderSecretView() {
       const d = t();
-
       if (!currentPairs.length) {
         resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.noResultYetHtml}</p>`;
         return;
@@ -763,9 +829,8 @@
       defaultOption.textContent = d.selectPlaceholder;
       select.appendChild(defaultOption);
 
-      const sortedNames = [...currentNames].sort((a, b) =>
-        a.localeCompare(b, currentLang === 'ja' ? 'ja' : (currentLang === 'en' ? 'en' : 'ko'))
-      );
+      const locale = currentLang === 'ja' ? 'ja' : (currentLang === 'en' ? 'en' : 'ko');
+      const sortedNames = [...currentNames].sort((a, b) => a.localeCompare(b, locale));
       sortedNames.forEach((name) => {
         const opt = document.createElement('option');
         opt.value = name;
@@ -808,11 +873,8 @@
     }
 
     function renderView() {
-      if (currentViewMode === 'all') {
-        renderAllView();
-      } else {
-        renderSecretView();
-      }
+      if (currentViewMode === 'all') renderAllView();
+      else renderSecretView();
     }
 
     function setViewMode(mode) {
@@ -893,11 +955,7 @@
       currentMatchType = matchType;
 
       currentNames = names;
-      if (matchType === 'cycle') {
-        currentPairs = makeRandomCycle(names);
-      } else {
-        currentPairs = makeGroupPairs(names);
-      }
+      currentPairs = (matchType === 'cycle') ? makeRandomCycle(names) : makeGroupPairs(names);
 
       updateDownloadButtonState();
       renderView();
@@ -912,25 +970,22 @@
       clearError();
       updateDownloadButtonState();
       resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.resultEmptyHtml}</p>`;
-      // 위 줄은 HTML을 포함하므로 아래처럼 안전하게 처리
-      resultContainer.innerHTML = `<p class="text-slate-400 text-sm">${d.resultEmptyHtml}</p>`;
     });
 
     namesInput.addEventListener('input', updateCount);
-
     viewAllButton.addEventListener('click', () => setViewMode('all'));
     viewSecretButton.addEventListener('click', () => setViewMode('secret'));
-
     downloadCsvButton.addEventListener('click', downloadCSV);
 
     if (copyLinkButton) {
       copyLinkButton.addEventListener('click', async () => {
+        const url = buildLangUrl(currentLang);
         try {
-          await navigator.clipboard.writeText(window.location.href);
+          await navigator.clipboard.writeText(url);
           toast(t().toastCopied);
         } catch (e) {
           const tmp = document.createElement('input');
-          tmp.value = window.location.href;
+          tmp.value = url;
           document.body.appendChild(tmp);
           tmp.select();
           document.execCommand('copy');
@@ -940,19 +995,34 @@
       });
     }
 
-    // ✅ 언어 선택 이벤트
     langSelect.addEventListener('change', () => {
       currentLang = langSelect.value;
       localStorage.setItem('lang', currentLang);
+
+      // ✅ URL도 동기화해서 언어별로 인덱싱/공유가 깔끔해짐
+      const nextUrl = buildLangUrl(currentLang);
+      window.history.replaceState({}, "", nextUrl);
+
+      setSeoLinks(currentLang);
       applyLanguage();
     });
 
-    // 초기 세팅
-    langSelect.value = currentLang;
-    applyLanguage();
-    updateCount();
-    setViewMode('all');
-    updateDownloadButtonState();
+    // ---------- init ----------
+    (function init() {
+      // 드롭다운 초기값 세팅
+      langSelect.value = currentLang;
+
+      // ✅ SEO 링크/공유 이미지 세팅
+      setShareImage();
+      setSeoLinks(currentLang);
+
+      // 언어 적용
+      applyLanguage();
+
+      updateCount();
+      setViewMode('all');
+      updateDownloadButtonState();
+    })();
   </script>
 </body>
 </html>
